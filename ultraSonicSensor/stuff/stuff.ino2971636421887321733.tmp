@@ -1,0 +1,140 @@
+// Additional info for ultrasonic sensor: https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf
+
+#include <Servo.h>
+
+// Servo
+Servo myservo;
+int pos = 0;
+
+// Pins for ultrasonic sensor
+int trigPin = 9;
+int echoPin = 10;
+
+long duration;
+int distance;
+
+int someObj[180];
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  myservo.attach(3);
+
+  for (int i = 0; i < 180; i++)
+    someObj[i] = -1;
+
+}
+
+void loop() {
+
+  // Scanning left to right
+  for (pos = 0; pos < 180; pos += 1)
+  {
+     myservo.write(pos);
+
+    if (aThing(pos))
+    {
+      Serial.println("wow, a thing!");
+      pos += 10;
+      delay(300);
+    }
+
+    else
+      Serial.println("Searching...");
+    delay(25);
+    //delay(300);
+
+  }
+
+
+
+
+  for (pos = 180; pos >= 1; pos -= 1)
+  {
+      myservo.write(pos);
+
+    if (aThing(pos))
+    {
+      Serial.println("wow, a thing!");
+      pos -= 10;
+      delay(300);
+    }
+
+    else
+      Serial.println("Searching...");
+
+    delay(25);
+    //   delay(300);
+
+  }
+
+
+
+}
+
+
+bool aThing(int pos) {
+
+
+  // Set low to ensure trigpin is clear
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+
+  // Emit pulse for 10 microseconds and turn off
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Start pulseIn timer
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate by multiplaying by speed of sound and dividing by 2
+  // since the sound wave emits to object, and then bounces back to sensor
+  distance = duration *= 0.034 / 2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Print distance in cm
+  if (distance <= 250 && distance > 4)
+  {
+    Serial.print("Distance: ");
+    Serial.println(distance);
+  }
+
+  if (distance <= 20)
+  {
+    if (someObj[pos] != distance)
+    {
+      // someObj[pos] = distance;
+      for (int i = pos, j = pos - 1; i < 9; i++, j--)
+      {
+        if (i < 179)
+          someObj[i] = distance;
+        if (j >= 0)
+          someObj[j] = distance;
+
+
+        delay(1000);
+      }
+      Serial.println(someObj[pos]);
+    }
+    return (distance <= 20);
+  }
+
+  // return true if there is an object at 20cm or less
+  return false;
+
+}
