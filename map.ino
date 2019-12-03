@@ -1,8 +1,12 @@
+// Arrays used by pointMap class
+// having them within pointMap makes
+// the class too large for arduino
 int pointsArray1[160][40];
 int pointsArray2[160][40];
 int pointsArray3[160][40];
 int pointsArray4[160][40];
 
+// class for managing the map of distances
 class pointMap
 {
   public:
@@ -25,6 +29,8 @@ class pointMap
     ~pointMap()
     {}
 
+    // function sets the value at (x, y) in the
+    // 2d array collection to value
     void setPoint(int x, int y, int value)
     {
       if( y % 40 == 0)
@@ -37,6 +43,8 @@ class pointMap
         pointsArray2[x][y] = value;
     }
 
+    // function sets the value at (x, y) in the
+    // 2d array collection
     int getPoint(int x, int y)
     {
       if( y % 40 == 0)
