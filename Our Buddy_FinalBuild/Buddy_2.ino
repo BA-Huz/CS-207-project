@@ -179,8 +179,8 @@ void setup()
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(5, OUTPUT);
-
-
+  
+  rollServo.setPWM(rollServoNum, 0, 170);
 
   initializeDistance();
 
