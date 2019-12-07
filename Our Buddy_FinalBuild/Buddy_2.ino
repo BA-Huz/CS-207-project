@@ -84,7 +84,7 @@ int distance;
 // the class too large for arduino
 const int YAW_RANGE = 45;
 const int PITCH_RANGE = 11;
-const int ROLL_BASE = 90;
+const int ROLL_BASE = 135;
 int pointsArray[YAW_RANGE][PITCH_RANGE];
 
 // class for managing the map of distances
@@ -180,7 +180,7 @@ void setup()
   pinMode(echoPin, INPUT);
   pinMode(5, OUTPUT);
   
-  rollServo.setPWM(rollServoNum, 0, 170);
+  rollServo.setPWM(rollServoNum, 0, ROLL_BASE + rollPosition);
 
   initializeDistance();
 
